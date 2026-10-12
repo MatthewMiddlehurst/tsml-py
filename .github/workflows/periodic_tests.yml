@@ -65,6 +65,11 @@ jobs:
   pytest:
     runs-on: ${{ matrix.os }}
 
+    env:
+      # CPU only torch wheels, the default Linux wheels install several GB of CUDA
+      # libraries
+      PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
+
     strategy:
       fail-fast: false
       matrix:
@@ -93,6 +98,11 @@ jobs:
 
   codecov:
     runs-on: ubuntu-24.04
+
+    env:
+      # CPU only torch wheels, the default Linux wheels install several GB of CUDA
+      # libraries
+      PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
 
     steps:
       - uses: actions/checkout@v7
