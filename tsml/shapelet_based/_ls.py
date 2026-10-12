@@ -9,15 +9,14 @@ from sklearn.utils.multiclass import check_classification_targets
 from sklearn.utils.validation import check_is_fitted
 
 from tsml.base import BaseTimeSeriesEstimator
-from tsml.utils.validation import _check_optional_dependency
 
 
 class LearningShapeletClassifier(ClassifierMixin, BaseTimeSeriesEstimator):
     """Learning Shapelets classifier.
 
     This is a wrapper for the LearningShapelets estimator from the `tslearn`
-    package [2]_. As well as `tslearn`, it requires `keras` 3 and a `keras` backend,
-    for which `tslearn` expects `torch`.
+    package [2]_. As well as `tslearn`, it requires `keras` 3 and `torch`, which are
+    not included in all extras and have to be installed separately.
 
     Learning Shapelets [1]_ learns a set of shapelets jointly with a logistic
     regression on the shapelet transform of the data, where the transform is the
@@ -110,9 +109,15 @@ class LearningShapeletClassifier(ClassifierMixin, BaseTimeSeriesEstimator):
         self.scale = scale
         self.random_state = random_state
 
-        # keras is not checked here, importing it would fix the keras backend before
-        # tslearn has selected one
-        _check_optional_dependency("tslearn", "tslearn", self)
+        # tslearn.shapelets selects the keras backend, so has to be imported before
+        # keras is
+        try:
+            import tslearn.shapelets  # noqa: F401
+        except ImportError as e:
+            raise ModuleNotFoundError(
+                f"{self.__class__.__name__} requires tslearn, keras and torch to be "
+                'installed. Run: "pip install tslearn keras torch".'
+            ) from e
 
         super().__init__()
 

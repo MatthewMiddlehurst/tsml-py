@@ -49,10 +49,8 @@ dependencies = [
 [project.optional-dependencies]
 all_extras = [
     "grailts",
-    "keras>=3.0.0; platform_system != 'Darwin' or platform_machine != 'x86_64'",  # keras and torch are required by tslearn LearningShapelets, torch has no wheels for Intel macOS
     "statsmodels>=0.12.1",
-    "torch; platform_system != 'Darwin' or platform_machine != 'x86_64'",
-    "tslearn>=0.9.0; platform_system != 'Darwin' or platform_machine != 'x86_64'",
+    "tslearn>=0.9.0",
 ]
 unstable_extras = [
     "mrsqm>=0.0.7; platform_system == 'Linux' and python_version < '3.12'",  # requires gcc and fftw to be installed for Windows and some other OS (see http://www.fftw.org/index.html)
